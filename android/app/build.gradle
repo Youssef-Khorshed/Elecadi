@@ -1,0 +1,61 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file("../key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
+
+android {
+    namespace = "com.elcadi.elcadi"
+    compileSdk = 34
+    ndkVersion = "27.0.12077973"
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId = "com.elcadi.elcadi"
+        minSdk = 21
+        targetSdk = 34
+        versionCode = 7
+        versionName = "app"
+    }
+
+    // Correct signingConfigs declaration (only once)
+    signingConfigs {
+        release {
+            storeFile file("./upload-keystore.jks")  // Path to the keystore file
+            storePassword "P@ssw0rd"  // Keystore password
+            keyAlias "upload"  // Key alias
+            keyPassword "P@ssw0rd"  // Key password
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources false
+            // Reference to the correct signing config
+            signingConfig signingConfigs.release
+        }
+    }
+
+
+    buildToolsVersion '34.0.0'
+}
+
+flutter {
+    source = "../.."
+}
