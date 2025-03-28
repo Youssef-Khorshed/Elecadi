@@ -41,7 +41,7 @@ actions: [
     },  child: const Text("Skip",style: TextStyle(color: Colors.yellow,fontSize: 16),) )
 ],),
       backgroundColor: Colors.black,
-      body: Image.asset("assets/splashGif.gif")
+      body: Center(child: Image.asset("assets/splashGif.gif"))
 
 
     );
