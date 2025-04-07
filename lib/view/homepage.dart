@@ -86,11 +86,14 @@ class HomePageState extends State<HomePage> {
                             }),
                       ),
               ),
-              body: RefreshIndicator(
-                onRefresh: _onRefresh,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 20.0),
-                  child: WebViewWidget(controller: controller),
+              body: GestureDetector(
+                onLongPress: null,
+                child: RefreshIndicator(
+                  onRefresh: _onRefresh,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 20.0),
+                    child: WebViewWidget(controller: controller),
+                  ),
                 ),
               ),
             ),

@@ -29,7 +29,7 @@ android {
         applicationId = "com.elcadi.elcadi"
         minSdk = 21
         targetSdk = 34
-        versionCode = 8
+        versionCode = 9
         versionName = "app"
     }
 

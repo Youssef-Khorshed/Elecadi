@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../view/homepage.dart';
-import '../navigation/navigator_service.dart';
-
-
-class ShimmerLoadingPage extends StatelessWidget{
-const  ShimmerLoadingPage({super.key});
+class ShimmerLoadingPage extends StatelessWidget {
+  const ShimmerLoadingPage({super.key});
   @override
   Widget build(BuildContext context) {
-  final size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -21,7 +16,7 @@ const  ShimmerLoadingPage({super.key});
             children: [
               _buildShimmerBottomNavigation(),
               const SizedBox(height: 20),
-              _buildShimmerBox(height: size.height/2.5),
+              _buildShimmerBox(height: size.height / 2.5),
               const SizedBox(height: 20),
               _buildShimmerBox(height: 20, width: 150),
               const SizedBox(height: 10),
@@ -37,7 +32,8 @@ const  ShimmerLoadingPage({super.key});
   }
 
   // Create shimmer effect for a box (used in different places)
-  Widget _buildShimmerBox({required double height, double width = double.infinity}) {
+  Widget _buildShimmerBox(
+      {required double height, double width = double.infinity}) {
     return Shimmer.fromColors(
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[100]!,
