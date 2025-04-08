@@ -16,15 +16,19 @@ class HomePageState extends State<HomePage> {
   String? currentLink;
   String? previousLink;
   List<String> container = [];
-
+  String jsString = '''
+  document.addEventListener("contextmenu", event => event.preventDefault());
+  document.addEventListener("selectstart", event => event.preventDefault());
+''';
   @override
   void initState() {
     controller = WebViewController()
+
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(onNavigationRequest: (NavigationRequest request) {
           return NavigationDecision.navigate;
-        }, onPageFinished: (item) {
+        }, onPageFinished: (item) async{
           setState(() {
             if (container.isNotEmpty) {
               if (container.last == item) {
@@ -35,6 +39,8 @@ class HomePageState extends State<HomePage> {
 
             isLoading = false;
           });
+          await controller.runJavaScript(jsString);
+
         }),
       )
       ..loadRequest(Uri.parse('https://elecadi.com/'));
@@ -87,12 +93,12 @@ class HomePageState extends State<HomePage> {
                       ),
               ),
               body: GestureDetector(
-                onLongPress: null,
+                onLongPress: () {},
                 child: RefreshIndicator(
                   onRefresh: _onRefresh,
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 20.0),
-                    child: WebViewWidget(controller: controller),
+                    child: WebViewWidget(controller: controller,),
                   ),
                 ),
               ),
