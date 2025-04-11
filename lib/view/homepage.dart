@@ -23,12 +23,11 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     controller = WebViewController()
-
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(onNavigationRequest: (NavigationRequest request) {
           return NavigationDecision.navigate;
-        }, onPageFinished: (item) async{
+        }, onPageFinished: (item) async {
           setState(() {
             if (container.isNotEmpty) {
               if (container.last == item) {
@@ -40,7 +39,6 @@ class HomePageState extends State<HomePage> {
             isLoading = false;
           });
           await controller.runJavaScript(jsString);
-
         }),
       )
       ..loadRequest(Uri.parse('https://elecadi.com/'));
@@ -63,47 +61,57 @@ class HomePageState extends State<HomePage> {
         : PopScope(
             canPop: false,
             onPopInvokedWithResult: (pop, item) {
-              if (!pop) {
+              if (!pop && container.length == 1) {
                 _showExitConfirmationDialog();
               }
             },
-            child: Scaffold(
-              backgroundColor: Colors.black,
-              appBar: AppBar(
+            child: GestureDetector(
+              onHorizontalDragEnd: (details) {
+                backlogic();
+              },
+              child: Scaffold(
                 backgroundColor: Colors.black,
-                leading: container.length - 1 <= 0 // previousLink == null
-                    ? const SizedBox()
-                    : Padding(
-                        padding: const EdgeInsets.only(left: 10.0),
-                        child: IconButton(
-                            icon: const Icon(
-                              Icons.arrow_back_ios,
-                              size: 30,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                isLoading = true;
-                                controller.loadRequest(
-                                    Uri.parse(container[container.length - 2]));
-                                container.removeLast();
-                                isLoading = false;
-                              });
-                            }),
+                appBar: AppBar(
+                  backgroundColor: Colors.black,
+                  leading: container.length - 1 <= 0 // previousLink == null
+                      ? const SizedBox()
+                      : Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: IconButton(
+                              icon: const Icon(
+                                Icons.arrow_back_ios,
+                                size: 30,
+                                color: Colors.white,
+                              ),
+                              onPressed: backlogic),
+                        ),
+                ),
+                body: GestureDetector(
+                  onLongPress: () {},
+                  child: RefreshIndicator(
+                    onRefresh: _onRefresh,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: WebViewWidget(
+                        controller: controller,
                       ),
-              ),
-              body: GestureDetector(
-                onLongPress: () {},
-                child: RefreshIndicator(
-                  onRefresh: _onRefresh,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
-                    child: WebViewWidget(controller: controller,),
+                    ),
                   ),
                 ),
               ),
             ),
           );
+  }
+
+  void backlogic() {
+    if (container.length > 1) {
+      setState(() {
+        isLoading = true;
+        controller.loadRequest(Uri.parse(container[container.length - 2]));
+        container.removeLast();
+        isLoading = false;
+      });
+    }
   }
 
   /// Show exit confirmation dialog
