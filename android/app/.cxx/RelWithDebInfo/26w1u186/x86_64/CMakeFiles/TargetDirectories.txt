@@ -1,0 +1,2 @@
+D:/Dev/Projects/Eelecadi/Elecadi/android/app/.cxx/RelWithDebInfo/26w1u186/x86_64/CMakeFiles/edit_cache.dir
+D:/Dev/Projects/Eelecadi/Elecadi/android/app/.cxx/RelWithDebInfo/26w1u186/x86_64/CMakeFiles/rebuild_cache.dir

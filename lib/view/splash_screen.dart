@@ -1,8 +1,9 @@
 import 'dart:async';
+import 'package:elcadi/core/navigation/navigator_service.dart';
 import 'package:elcadi/view/homepage.dart';
 import 'package:flutter/material.dart';
-import '../core/navigation/navigator_service.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gif/gif.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -11,40 +12,68 @@ class SplashScreen extends StatefulWidget {
   SplashScreenState createState() => SplashScreenState();
 }
 
-class SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
- late Timer timer;
+class SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
+  late GifController _gifController;
+
   @override
   void initState() {
     super.initState();
-
-timer =  Timer(const Duration(seconds: 4,milliseconds: 800),(){
-
-
-      NavigationService.pushReplacement(const HomePage());});
-
-
-
+    _gifController = GifController(vsync: this);
   }
 
+  @override
+  void dispose() {
+    _gifController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-appBar:  AppBar(
-    backgroundColor: Colors.black,
-actions: [
-  TextButton(onPressed: (){
-    timer.cancel();
-    NavigationService.pushReplacement( const HomePage());
-
-
-    },  child: const Text("Skip",style: TextStyle(color: Colors.yellow,fontSize: 16),) )
-],),
       backgroundColor: Colors.black,
-      body: Center(child: Image.asset("assets/splashGif.gif"))
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          // Centered GIF/Image
+          Center(
+            child: SizedBox(
+              child: Gif(
+                autostart: Autostart.once,
 
+                onFetchCompleted: () {
+                  // Navigate to HomePage after the GIF completes
+                  Timer(const Duration(seconds: 6), () {
+                    NavigationService.pushReplacement(const HomePage());
+                  });
+                },
+                controller: _gifController,
+                image: const AssetImage("assets/splashGif.gif"),
+                fit:
+                    BoxFit
+                        .contain, // Ensures the GIF fits within the box without distortion
+              ),
+            ),
+          ),
 
+          // Skip Button (Positioned at the Top-Right Corner)
+          Positioned(
+            top:
+                MediaQuery.of(context).padding.top +
+                16, // Adjust for status bar
+            right: 16,
+            child: TextButton(
+              onPressed: () {
+                NavigationService.pushReplacement(const HomePage());
+              },
+              child: const Text(
+                "Skip",
+                style: TextStyle(color: Colors.yellow, fontSize: 16),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
-

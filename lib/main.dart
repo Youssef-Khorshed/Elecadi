@@ -2,7 +2,6 @@ import 'package:elcadi/view/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'core/navigation/navigator_service.dart';
 
 void main() {

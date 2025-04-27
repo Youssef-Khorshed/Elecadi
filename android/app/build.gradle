@@ -13,8 +13,8 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.elcadi.elcadi"
-    compileSdk = 34
-    ndkVersion = "27.0.12077973"
+    compileSdk = 35
+    ndkVersion = "29.0.13113456"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -27,19 +27,25 @@ android {
 
     defaultConfig {
         applicationId = "com.elcadi.elcadi"
-        minSdk = 21
-        targetSdk = 34
+        minSdk 23
+        targetSdk 35
         versionCode = 9
         versionName = "app"
     }
 
     // Correct signingConfigs declaration (only once)
     signingConfigs {
+        // debug {
+        //     storeFile file("C:/Users/Khorshed/.android/debug.keystore")
+        //     storePassword "android"
+        //     keyAlias "AndroidDebugKey"
+        //     keyPassword "android"
+        // }
         release {
-            storeFile file("./upload-keystore.jks")  // Path to the keystore file
-            storePassword "P@ssw0rd"  // Keystore password
-            keyAlias "upload"  // Key alias
-            keyPassword "P@ssw0rd"  // Key password
+            storeFile file("D:/Dev/Projects/Eelecadi/Elecadi/android/upload-keystore.jks")
+            storePassword "P@ssw0rd"
+            keyAlias "upload"
+            keyPassword "P@ssw0rd"
         }
     }
 
@@ -53,7 +59,7 @@ android {
     }
 
 
-    buildToolsVersion '34.0.0'
+    buildToolsVersion '35.0.1'
 }
 
 flutter {
