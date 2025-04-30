@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:elcadi/core/navigation/navigator_service.dart';
 import 'package:elcadi/view/homepage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gif/gif.dart';
 
 class SplashScreen extends StatefulWidget {

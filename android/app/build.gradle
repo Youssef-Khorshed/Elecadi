@@ -1,7 +1,6 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
 }
 
@@ -29,23 +28,18 @@ android {
         applicationId = "com.elcadi.elcadi"
         minSdk 23
         targetSdk 35
-        versionCode = 9
-        versionName = "app"
+        versionCode = 2
+        versionName = "1.0.13"
     }
 
     // Correct signingConfigs declaration (only once)
     signingConfigs {
-        // debug {
-        //     storeFile file("C:/Users/Khorshed/.android/debug.keystore")
-        //     storePassword "android"
-        //     keyAlias "AndroidDebugKey"
-        //     keyPassword "android"
-        // }
+
         release {
-            storeFile file("D:/Dev/Projects/Eelecadi/Elecadi/android/upload-keystore.jks")
-            storePassword "P@ssw0rd"
+            storeFile file("/Users/youssef/upload-keystore.jks")
+            storePassword "Tgb@WADPq8Y!uKmw490"
             keyAlias "upload"
-            keyPassword "P@ssw0rd"
+            keyPassword "Tgb@WADPq8Y!uKmw490"
         }
     }
 

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:elcadi/core/helpers/shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -19,8 +17,24 @@ class _HomePageState extends State<HomePage> {
   double? startX;
 
   String jsString = '''
+  // Disable context menu
   document.addEventListener("contextmenu", event => event.preventDefault());
+
+  // Disable text selection
   document.addEventListener("selectstart", event => event.preventDefault());
+
+  // Disable long-press actions
+  document.addEventListener("touchstart", event => {
+    if (event.touches.length > 1) {
+      event.preventDefault(); // Prevent multi-touch gestures
+    }
+  }, { passive: false });
+
+  document.addEventListener("touchmove", event => {
+    if (event.touches.length > 1) {
+      event.preventDefault(); // Prevent multi-touch gestures
+    }
+  }, { passive: false });
 ''';
   @override
   void initState() {
@@ -141,8 +155,7 @@ class IOSPopDetector extends StatefulWidget {
   final Widget child;
   final VoidCallback? onSwipeDetected;
 
-  const IOSPopDetector({Key? key, required this.child, this.onSwipeDetected})
-    : super(key: key);
+  const IOSPopDetector({super.key, required this.child, this.onSwipeDetected});
 
   @override
   _IOSPopDetectorState createState() => _IOSPopDetectorState();
@@ -150,26 +163,30 @@ class IOSPopDetector extends StatefulWidget {
 
 class _IOSPopDetectorState extends State<IOSPopDetector> {
   double? startX;
+  double? startY; // Track vertical position
   bool isSwiping = false;
 
   @override
   Widget build(BuildContext context) {
     return Listener(
       onPointerDown: (PointerDownEvent event) {
-        startX = event.position.dx;
+        // Only start tracking if the touch begins near the left edge
+        if (event.position.dx < 50) {
+          // Swipe only from the left edge (first 50px)
+          startX = event.position.dx;
+          startY = event.position.dy; // Initialize vertical position
+        }
       },
       onPointerMove: (PointerMoveEvent event) {
-        if (startX != null && !isSwiping) {
+        if (startX != null && startY != null && !isSwiping) {
           double currentX = event.position.dx;
+          double currentY = event.position.dy;
           double deltaX = currentX - startX!;
+          double deltaY = currentY - startY!;
 
-          // Check if the gesture is a horizontal swipe
-          if (deltaX.abs() > 50) {
+          // Check if the gesture is primarily horizontal (ignore vertical scrolling)
+          if (deltaX.abs() > 50 && deltaX.abs() > deltaY.abs()) {
             if (deltaX > 0) {
-              print('Swipe Right Detected');
-              widget.onSwipeDetected?.call(); // Trigger custom logic
-            } else {
-              print('Swipe Left Detected');
               widget.onSwipeDetected?.call(); // Trigger custom logic
             }
             isSwiping = true; // Prevent multiple triggers
@@ -178,6 +195,7 @@ class _IOSPopDetectorState extends State<IOSPopDetector> {
       },
       onPointerUp: (PointerUpEvent event) {
         startX = null;
+        startY = null;
         isSwiping = false;
       },
       child: widget.child,

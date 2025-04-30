@@ -1,0 +1,1 @@
+/Users/youssef/Documents/dev/projects/Eelecadi/Elecadi/build/app/intermediates/cxx/RelWithDebInfo/1u5a214b/obj/arm64-v8a
