@@ -47,6 +47,7 @@ class _HomePageState extends State<HomePage> {
               onNavigationRequest: (NavigationRequest request) {
                 return NavigationDecision.navigate;
               },
+              onPageStarted: (url) {},
               onPageFinished: (item) async {
                 setState(() {
                   if (container.isNotEmpty) {
